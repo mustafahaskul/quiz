@@ -6,16 +6,17 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
+        <!-- Styles -->
+        
         <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
           @livewireStyles
       
           <!-- Scripts -->
           <script src="{{ asset('/js/app.js') }}" defer></script>
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">
