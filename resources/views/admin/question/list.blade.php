@@ -4,8 +4,14 @@
         <div class="card-body">
             <h5 class="card-title">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-                <a href="{{route('questions.create',$quiz->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>Soru Oluştur</a>
+                <h5 style="float: right;" class="card-title">
+                    <a href="{{route('questions.create',$quiz->id)}}" class="btn btn-sm btn-primary">
+                        <i class="fa fa-plus"></i>Soru Oluştur</a>
+                </h5>
+                <h5 class="card-title">
+                    <a href="{{route('quizzes.index')}}" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-arrow-left"></i>Quizlere Dön</a>
+                </h5>
             </h5>
             <table class="table table-bordered table-sm">
                 <thead>
@@ -24,10 +30,9 @@
                         <tr>
                             <td>{{$question->question}}</td>
                             <td>
-                                {{$question->image}}
-                                <!-- @if($question->image)
+                                @if($question->image)
                                 <a href="{{asset($question->image)}}" target="_blank" class="btn btn-sm btn-light">Görüntüle</a>
-                                @endif -->
+                                @endif
                             </td>
                             <td>{{$question->answer1}}</td>
                             <td>{{$question->answer2}}</td>
@@ -38,13 +43,18 @@
                                 <!-- substr = sondan ... karakteri al -->
                             </td>
                             <td>
-                                <a href="{{route('quizzes.edit',$quiz->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                                <a href="{{route('quizzes.destroy',$quiz->id)}}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                                <span title="Güncelle">
+                                    <a href="{{route('questions.edit',[$quiz->id,$question->id])}}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </span>
+                                <span title="Sil">
+                                    <a href="{{route('questions.destroy',[$quiz->id,$question->id])}}" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </span>
+
                             </td>
-                            <!-- <td>
-                                <a href="{{route('questions.edit',[$quiz->id,$question->id])}}" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                                <a href="{{route('questions.destroy',[$quiz->id,$question->id])}}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
-                            </td> -->
                         </tr>
                     <?php } ?>
                 </thead>

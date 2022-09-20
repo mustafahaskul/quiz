@@ -18,9 +18,17 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $quizzes = Quiz::paginate(5);
-        //Adminin içindeki quizin içindeki list.blade.php çağırır
-        return view('admin.quiz.list', compact('quizzes'));
+        $quizzes = Quiz::withCount('questions');// withcount = Getirilecek olan verinin sayısını verir
+        if(request()->get('title'))
+        {
+            $quizzes = $quizzes->where('title','LIKE',"%".request()->get('title')."%"); // verilen quizin içinde var mı yok mu? LIKE arama yaptırır. 
+        }
+        if(request()->get('status'))// eğer statüse de veri girişi varsa 
+        {
+            $quizzes = $quizzes->where('status',request()->get('status'));
+        }
+        $quizzes = $quizzes->paginate(5);
+        return view('admin.quiz.list', compact('quizzes'));//Adminin içindeki quizin içindeki list.blade.php çağırır
     }
 
     /**

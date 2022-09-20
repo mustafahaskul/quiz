@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Str;
 use App\Http\Requests\QuestionCreateRequest;
+use App\Http\Requests\QuestionUpdateRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use App\Models\Quiz;
@@ -68,9 +69,10 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($quiz_id,$question_id)
     {
-        //
+        $question =  Quiz::find($quiz_id)->questions()->whereId($question_id)->first() ?? abort(404, 'Quiz ve ya soru bulunamadı');
+        return view('admin.question.edit',compact('question'));
     }
 
     /**
@@ -80,9 +82,28 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(QuestionUpdateRequest $request,$quiz_id,$question_id)
     {
-        //
+        if($request->hasFile('image'))//bu bir resim mi değil mi?
+        {
+            $fileName = Str::slug($request->question).'.'.$request->image->extension();// resmin adı
+
+            $fileNameWithUpload = 'uploads/'.$fileName;// resmin dosya yolu
+            
+            $request->image->move(public_path('uploads'),$fileName);// projenin içine kaydetme
+
+            $request->merge([
+
+                'image'=>$fileNameWithUpload// $fileNameWithUpload  yerine image ekle
+
+            ]);
+
+        }
+         Quiz::find($quiz_id)->questions()->whereId($question_id)->first()->update($request->post());
+          // verilen quiz var mı yok mu? varsa soruların içindeki hangi soru? o soruyu çek ve güncelle
+
+        return redirect()->route('questions.index',$quiz_id)->withSuccess('Soru Başarıyla Güncellendi');
+
     }
 
     /**
@@ -91,8 +112,9 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($quiz_id,$question_id)
     {
-        //
+        Quiz::find($quiz_id)->questions()->whereId($question_id)->delete(); // böyle bir quiz var mı? varsa içineki sorulara ulaş. Hangi soruyu seçtiyse onu çek ve sil
+        return redirect()->route('questions.index',$quiz_id)->withSuccess('Soru Başarıyla Silindi');
     }
 }
