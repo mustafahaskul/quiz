@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
 use App\Http\Requests\QuizCreateRequest;
+use App\Http\Requests\QuizUpdateRequest;
+
 
 class QuizController extends Controller
 {
@@ -18,7 +20,7 @@ class QuizController extends Controller
     {
         $quizzes = Quiz::paginate(5);
         //Adminin içindeki quizin içindeki list.blade.php çağırır
-        return view('admin.quiz.list',compact('quizzes'));
+        return view('admin.quiz.list', compact('quizzes'));
     }
 
     /**
@@ -28,7 +30,7 @@ class QuizController extends Controller
      */
     public function create()
     {
-        return view('admin.quiz.create');    
+        return view('admin.quiz.create');
     }
 
     /**
@@ -51,7 +53,10 @@ class QuizController extends Controller
      */
     public function show($id)
     {
-        //
+        // $quiz = Quiz::with('topTen.user','results.user')->withCount('questions')->find($id) ?? abort(404, 'Quiz Bulunamadı');
+
+        // return view('admin.quiz.show',compact('quiz'));
+        return $id;
     }
 
     /**
@@ -62,7 +67,8 @@ class QuizController extends Controller
      */
     public function edit($id)
     {
-        //
+        $quiz = Quiz::withCount('questions')->find($id) ?? abort(404, 'Quiz bulunamadı');
+        return view('admin.quiz.edit', compact('quiz'));
     }
 
     /**
@@ -74,7 +80,11 @@ class QuizController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $quiz = Quiz::find($id) ?? abort(404, 'Quiz bulunamadı');
+       
+        Quiz::where('id',$id)->update($request->except(['_method','_token'])); // _method ve _token haricindekiler
+ 
+        return redirect()->route('quizzes.index')->withSuccess('Quiz güncelleme işlemi başarıyla gerçekleşti');
     }
 
     /**
@@ -85,6 +95,8 @@ class QuizController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $quiz = Quiz::find($id) ?? abort(404, 'Quiz bulunamadı'); //böyle bir veri var mı?
+        $quiz->delete();
+        return redirect()->route('quizzes.index')->withSuccess('Quiz silme işlemi başarıyla gerçekleşti');
     }
 }
