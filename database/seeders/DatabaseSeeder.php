@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Answers;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([        //istediğimiz seeder dosyasını çağırabiliriz
+        $this->call([//istediğimiz seeder dosyasını çağırabiliriz
             UserSeeder::class,
             QuizSeeder::class,
-            QuestionSeeder::class
-
+            QuestionSeeder::class,
+            AnswerSeeder::class,
+            ResultSeeder::class
         ]);
     }
 }

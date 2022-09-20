@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
+use Cviebrock\EloquentSluggable\Sluggable;
 class Quiz extends Model
 {
     use HasFactory;
+    
     protected $fillable=['title','description','status','finished_at','slug'];
 
     protected $dates=['finished_at']; // kendi oluşturduğumuz sütunu carbon olarak kullanabilmek için burada belirtiyoruz
@@ -17,7 +18,14 @@ class Quiz extends Model
     { 
         return $date ? Carbon::parse($date): null; // ilgili sütunda biyiş tarihi varsa caerbon bize parse sayesinde kullanılabilir bir fonksiyon halinde dönecek
     }
-
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
     public function questions()
     {
         return $this->hasMany('App\Models\Question');
