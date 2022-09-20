@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-md-4">
+        <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
                     Quiz Sonuçları
@@ -30,11 +30,11 @@
                         <strong>{{$result->point}}</strong> -
                         <a href="{{route('quiz.detail',$result->quiz->slug)}}">
                             {{$result->quiz->title}}
+                        </a>
                     </li>
-                    </a>
                     @endforeach
                 </ul>
             </div>
-        </div> -->
+        </div>
     </div>
 </x-app-layout>
