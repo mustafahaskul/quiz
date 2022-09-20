@@ -22,7 +22,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    Quiz Sonuçları
+                    Quiz Sonuçların
                 </div>
                 <ul class="list-group list-group-flush">
                     @foreach($results as $result)
